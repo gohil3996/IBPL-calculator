@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ethanol Plant Calculator: Maize vs Rice</title>
+<style>
+:root{--bg:#eef5f3;--card:#fff;--tx:#10231f;--mu:#5b6f6a;--bd:#d4e3de;--in:#f4faf8;--g1:#047857;--g2:#0f766e;--b1:#1d4ed8;--b2:#1e3a8a;--mz:#047857;--rc:#1d4ed8;--ok:#047857;--bad:#b91c1c;--sec:#e3f4ee;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#08130f;--card:#0f1f1a;--tx:#e6f2ee;--mu:#93aaa3;--bd:#1f3a32;--in:#0a1813;--mz:#34d399;--rc:#60a5fa;--ok:#34d399;--bad:#f87171;--sec:#12302a}}
+:root[data-theme="dark"]{--bg:#08130f;--card:#0f1f1a;--tx:#e6f2ee;--mu:#93aaa3;--bd:#1f3a32;--in:#0a1813;--mz:#34d399;--rc:#60a5fa;--ok:#34d399;--bad:#f87171;--sec:#12302a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.hd{background:linear-gradient(135deg,#047857 0%,#0f766e 35%,#1d4ed8 75%,#1e3a8a 100%);color:#fff;padding:22px 16px 60px}
+.w{max-width:1000px;margin:0 auto;padding:0 16px}.hd .w{padding:0}
+h1{font-size:23px;margin:0 0 2px}.sub{opacity:.85;font-size:13px}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:-44px}
+.kc{background:rgba(255,255,255,.14);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.3);border-radius:14px;padding:12px;color:#fff;background-image:linear-gradient(135deg,rgba(4,120,87,.92),rgba(30,58,138,.92))}
+.kc .n{font-size:12px;opacity:.85}.kc .v{font-size:22px;font-weight:700}
+h2{font-size:16px;margin:0 0 10px;background:linear-gradient(90deg,var(--g1),var(--b1));-webkit-background-clip:text;background-clip:text;color:transparent}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-top:14px;box-shadow:0 2px 10px rgba(30,58,138,.06)}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+label{display:block;font-size:12px;color:var(--mu)}
+input[type=number]{width:100%;box-sizing:border-box;margin-top:3px;padding:8px;border:1px solid var(--bd);border-radius:8px;background:var(--in);color:var(--tx);font-size:15px}
+input[type=range]{width:100%;margin-top:6px;accent-color:#1d4ed8}
+.top{height:4px;border-radius:4px;margin-bottom:10px}.mzt{background:linear-gradient(90deg,#047857,#34d399)}.rct{background:linear-gradient(90deg,#1d4ed8,#60a5fa)}.mxt{background:linear-gradient(90deg,#047857,#1e3a8a)}
+h3{font-size:14px;margin:0 0 8px}
+.hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:14px}
+.k{border-radius:14px;padding:12px;border:2px solid var(--bd);background:var(--card)}.k.win{border-color:#1d4ed8;box-shadow:0 0 0 3px rgba(29,78,216,.15)}
+.k .n{font-size:12px;color:var(--mu)}.k .v{font-size:24px;font-weight:700}.k .s{font-size:12px;color:var(--mu)}
+.bar{display:flex;align-items:center;gap:8px;margin:7px 0;font-size:13px}.bar b{width:62px}.bar i{display:block;height:20px;border-radius:6px;min-width:3px}.bar span{white-space:nowrap}
+.sc{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:430px}
+th,td{padding:7px 8px;border-bottom:1px solid var(--bd);text-align:right;font-size:14px}
+th:first-child,td:first-child{text-align:left}th{font-size:12px;color:var(--mu)}
+tr.sec td{background:var(--sec);font-weight:700;text-align:left;color:var(--b2)}
+tr.t td{font-weight:700}.pos{color:var(--ok)}.neg{color:var(--bad)}
+button{padding:9px 16px;border-radius:10px;border:0;background:linear-gradient(135deg,#047857,#1e3a8a);color:#fff;font-size:14px;cursor:pointer}
+.note{font-size:12px;color:var(--mu);margin:10px 0 24px}
+select{width:100%;box-sizing:border-box;margin-top:3px;padding:8px;border:1px solid var(--bd);border-radius:8px;background:var(--in);color:var(--tx);font-size:15px}
+.b2{background:var(--card);color:var(--tx);border:1px solid var(--bd)}
+.bx{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+summary{cursor:pointer;font-weight:700;font-size:16px;color:var(--b1)}
+.cs{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:10px 0}.cs div{background:var(--sec);border-radius:10px;padding:8px;font-size:12px;color:var(--mu)}.cs b{display:block;font-size:17px;color:var(--b2)}
+#cf{min-width:900px}
+@media print{.noprint{display:none!important}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.card{box-shadow:none;break-inside:avoid}}
+</style></head><body>
+<div class="hd"><div class="w"><h1>Ethanol Plant Calculator</h1><div class="sub">Maize vs Rice &middot; koi pan price badlo, badhu aapo-aap update thase</div></div></div>
+<div class="w">
+<div class="kp" id="kp"></div>
+<div class="bx noprint"><button class="b2" onclick="preset(-.1,.05,.1)">Best case</button><button class="b2" id="reset">Base case (my notes)</button><button class="b2" onclick="preset(.1,-.05,-.1)">Worst case</button><button onclick="window.print()">Print summary</button></div>
+
+
+<div class="card noprint"><h2>Plant settings</h2><div class="g">
+<label>Capacity (litres/day)<input id="cap" type="number"></label>
+<label>Operating days / year<input id="days" type="number"></label>
+<label>DDGS price (₹/MT)<input id="dp" type="number"></label>
+<label>CO₂ per litre (kg)<input id="ck" type="number" step="0.01"></label>
+<label>CO₂ price (₹/kg)<input id="cp" type="number" step="0.1"></label>
+<label>Chemicals, yeast, enzymes (₹/litre)<input id="chem" type="number" step="0.1"></label>
+<label>Fuel / boiler (₹/litre)<input id="fuel" type="number" step="0.1"></label>
+<label>Salary, maintenance, power (₹/litre)<input id="oth" type="number" step="0.1"></label>
+</div></div>
+
+<div class="g noprint" style="margin-top:14px">
+<div class="card" style="margin:0"><div class="top mzt"></div><h3 style="color:var(--mz)">Maize</h3><div class="g">
+<label>Maize price (₹/MT)<input id="mp" type="number"></label>
+<label>Ethanol yield (litre/MT)<input id="my" type="number"></label>
+<label>Ethanol price (₹/litre)<input id="me" type="number" step="0.01"></label>
+<label>DDGS (kg per litre)<input id="md" type="number" step="0.01"></label></div></div>
+<div class="card" style="margin:0"><div class="top rct"></div><h3 style="color:var(--rc)">Rice</h3><div class="g">
+<label>Rice price (₹/MT)<input id="rp" type="number"></label>
+<label>Ethanol yield (litre/MT)<input id="ry" type="number"></label>
+<label>Ethanol price (₹/litre)<input id="re" type="number" step="0.01"></label>
+<label>DDGS (kg per litre)<input id="rd" type="number" step="0.01"></label></div></div>
+</div>
+
+<div class="card noprint"><div class="top mxt"></div><h2>Dual feed mix and finance</h2><div class="g">
+<label>Maize share: <b id="shv"></b><input id="sh" type="range" min="0" max="100" step="5"></label>
+<label>Project cost (₹ Cr)<input id="pc" type="number"></label>
+<label>Bank loan (%)<input id="db" type="number"></label>
+<label>Interest rate (%)<input id="ir" type="number" step="0.1"></label>
+<label>Depreciation (% of cost / year)<input id="dep" type="number" step="0.5"></label>
+<label>Tax rate (%)<input id="tx" type="number" step="0.5"></label>
+</div></div>
+
+<div class="card noprint"><div class="top mxt"></div><h2>Fuel source: coal vs biomass</h2><div class="g">
+<label>Fuel cost used in calculation<select id="fmode"><option value="manual">Manual (₹/litre above)</option><option value="bio">Biomass</option><option value="coal">Coal</option></select></label>
+<label>Biomass price (₹/MT)<input id="bio" type="number"></label>
+<label>Biomass per litre (kg)<input id="bk" type="number" step="0.1"></label>
+<label>Coal price (₹/MT)<input id="coal" type="number"></label>
+<label>Coal per litre (kg)<input id="ck2" type="number" step="0.1"></label></div>
+<div class="sc" style="margin-top:10px"><table id="fc"></table></div></div>
+
+<div class="hero" id="hero"></div>
+<div class="card"><h2>Yearly profit (EBITDA)</h2><div id="bars"></div></div>
+<div class="card sc"><h2>Maize vs Rice: full calculation</h2><table id="tb"></table></div>
+<div class="card sc"><h2>Profit after interest, depreciation and tax</h2><table id="fin"></table></div>
+<details class="card" id="cfd"><summary>Year-wise cash flow, DSCR and IRR (click to open)</summary>
+<div class="g noprint" style="margin:12px 0"><label>Loan tenure (years)<input id="ln" type="number"></label><label>Moratorium (years)<input id="mo" type="number"></label></div>
+<div class="cs" id="cfs"></div><div class="sc"><table id="cf"></table></div>
+<div class="note" style="margin-bottom:0">Blended EBITDA har varse sarkho (growth ke ramp-up nathi). Moratorium ma matra interest, pachhi equal principal instalments. Tax ma loss carry-forward nathi. IRR ma terminal value, working capital ane ramp-up nathi, etle notes ni IRR (24-28%) karta vadhare aave. Amounts ₹ Cr ma.</div></details>
+
+<div class="card" id="ins"></div>
+<div class="note">Raw material daily MT = capacity ÷ yield (neeche rounded, jem notes ma). Monthly = 30 divas. Interest, depreciation ane tax defaults mara assumptions chhe (tamari notes ma nathi), potana pramane badlo. Interest pehla varse puri loan par ganyu chhe.</div>
+</div>
+<script>
+var D={cap:100000,days:340,dp:25000,ck:0.75,cp:2,chem:2,fuel:6,oth:2.5,mp:22000,my:380,me:71.86,md:0.8,rp:23000,ry:430,re:64,rd:0.45,sh:90,pc:145,db:70,ir:10,dep:6,tx:25,fmode:"manual",bio:3300,coal:7500,bk:1.8,ck2:1.3,ln:10,mo:2};
+function $(i){return document.getElementById(i)}
+function v(i){var x=parseFloat($(i).value);return isNaN(x)?0:x}
+function money(x){var a=Math.abs(x),s=x<0?"-":"";if(a>=1e7)return s+"₹"+(a/1e7).toFixed(2)+" Cr";if(a>=1e5)return s+"₹"+(a/1e5).toFixed(2)+" lakh";return s+"₹"+Math.round(a).toLocaleString("en-IN")}
+function pl(x){return "₹"+x.toFixed(2)}
+function n(x){return Math.round(x).toLocaleString("en-IN")}
+function cl(x){return x>=0?"pos":"neg"}
+function irr(c){var lo=-0.9,hi=10,f=function(x){var s=0;for(var i=0;i<c.length;i++)s+=c[i]/Math.pow(1+x,i);return s};if(f(lo)*f(hi)>0)return null;for(var k=0;k<80;k++){var mid=(lo+hi)/2;if(f(lo)*f(mid)<=0)hi=mid;else lo=mid}return(lo+hi)/2}
+function preset(g,e,d){$("mp").value=Math.round(D.mp*(1+g)/10)*10;$("rp").value=Math.round(D.rp*(1+g)/10)*10;$("me").value=(D.me*(1+e)).toFixed(2);$("re").value=(D.re*(1+e)).toFixed(2);$("dp").value=Math.round(D.dp*(1+d)/10)*10;render()}
+function extra(bl){
+var days=v("days"),cap=v("cap");
+var bF=v("bk")*v("bio")/1000,cF=v("ck2")*v("coal")/1000;
+function fr(nm,kg,L){var mt=kg*cap/1000;return '<tr><td>'+nm+'</td><td>'+pl(L)+'</td><td>'+n(mt)+' MT</td><td>'+n(mt*days)+' MT</td><td>'+money(L*cap*days)+'</td></tr>'}
+$("fc").innerHTML='<tr><th></th><th>Cost / litre</th><th>Daily</th><th>Yearly</th><th>Yearly cost</th></tr>'+fr("Biomass",v("bk"),bF)+fr("Coal",v("ck2"),cF)+'<tr class="t"><td>Biomass saving vs coal</td><td colspan="4" class="'+cl(cF-bF)+'">'+money((cF-bF)*cap*days)+' per year</td></tr>';
+var P=v("pc")*1e7,L=P*v("db")/100,ir=v("ir")/100,ln=Math.max(1,Math.round(v("ln"))),mo=Math.max(0,Math.min(Math.round(v("mo")),ln-1)),rp=L/(ln-mo),bal=L,N=Math.max(10,ln),pcf=[-P],ecf=[-(P-L)],cum=-(P-L),cumP=-P,pay=null,R=[];
+for(var t=1;t<=N;t++){var op=bal,it=op*ir,pr=(t>mo&&t<=ln)?rp:0,dp=P*v("dep")/100,pbt=bl-it-dp,tx=Math.max(0,pbt)*v("tx")/100,pat=pbt-tx,ds=it+pr,fc=bl-tx-ds;
+bal=op-pr;cum+=fc;cumP+=bl-tx;pcf.push(bl-tx);ecf.push(fc);
+if(pay===null&&cumP>=0&&bl-tx>0)pay=t-1+(-(cumP-(bl-tx)))/(bl-tx);
+R.push({t:t,op:op,it:it,pr:pr,eb:bl,dp:dp,tx:tx,pat:pat,ds:ds,dscr:ds>0?(bl-tx)/ds:null,fc:fc,cum:cum})}
+var ds=R.filter(function(x){return x.dscr!==null}).map(function(x){return x.dscr}),pi=irr(pcf),ei=irr(ecf);
+function cd(t,x){return '<div>'+t+'<b>'+x+'</b></div>'}
+$("cfs").innerHTML=cd("Project IRR",pi===null?"n/a":(pi*100).toFixed(1)+"%")+cd("Equity IRR",ei===null?"n/a":(ei*100).toFixed(1)+"%")+cd("Min DSCR",ds.length?Math.min.apply(null,ds).toFixed(2):"n/a")+cd("Average DSCR",ds.length?(ds.reduce(function(a,b){return a+b},0)/ds.length).toFixed(2):"n/a")+cd("Project payback",pay===null?"n/a":pay.toFixed(1)+" yrs")+cd("Loan",money(L));
+function c(x){return(x/1e7).toFixed(2)}
+function rw(nm,f,cls){return '<tr'+(cls?' class="'+cls+'"':'')+'><td>'+nm+'</td>'+R.map(f).join("")+'</tr>'}
+$("cf").innerHTML='<tr><th>Year</th>'+R.map(function(x){return '<th>'+x.t+'</th>'}).join("")+'</tr>'+rw("Opening loan",function(x){return '<td>'+c(x.op)+'</td>'})+rw("Interest",function(x){return '<td>'+c(x.it)+'</td>'})+rw("Principal repaid",function(x){return '<td>'+c(x.pr)+'</td>'})+rw("EBITDA",function(x){return '<td>'+c(x.eb)+'</td>'})+rw("Depreciation",function(x){return '<td>'+c(x.dp)+'</td>'})+rw("Tax",function(x){return '<td>'+c(x.tx)+'</td>'})+rw("Profit after tax",function(x){return '<td class="'+cl(x.pat)+'">'+c(x.pat)+'</td>'},"t")+rw("Debt service",function(x){return '<td>'+c(x.ds)+'</td>'})+rw("DSCR",function(x){return '<td class="'+(x.dscr===null?'':x.dscr<1.2?'neg':'pos')+'">'+(x.dscr===null?'-':x.dscr.toFixed(2))+'</td>'},"t")+rw("Cash to equity",function(x){return '<td class="'+cl(x.fc)+'">'+c(x.fc)+'</td>'})+rw("Cumulative equity cash",function(x){return '<td class="'+cl(x.cum)+'">'+c(x.cum)+'</td>'});
+}
+function fl(){var m=$("fmode").value;if(m=="bio")return v("bk")*v("bio")/1000;if(m=="coal")return v("ck2")*v("coal")/1000;return v("fuel")}
+window.onbeforeprint=function(){$("cfd").open=true};
+
+function calc(p,y,e,d){var cap=v("cap"),days=v("days"),mt=y?Math.floor(cap/y):0,raw=mt*p,rawL=cap?raw/cap:0,dd=d/1000*v("dp"),co=v("ck")*v("cp"),inc=e+dd+co,cost=rawL+v("chem")+fl()+v("oth"),pr=inc-cost,day=pr*cap;
+return{mt:mt,raw:raw,rawL:rawL,e:e,dd:dd,co:co,inc:inc,cost:cost,pr:pr,day:day,mon:day*30,yr:day*days}}
+function fin(eb){var P=v("pc")*1e7,i=P*v("db")/100*v("ir")/100,dp=P*v("dep")/100,pbt=eb-i-dp,t=Math.max(0,pbt)*v("tx")/100,pat=pbt-t,cash=eb-t;
+return{eb:eb,i:i,dp:dp,pbt:pbt,t:t,pat:pat,pay:cash>0?P/cash:0}}
+function render(){
+var m=calc(v("mp"),v("my"),v("me"),v("md")),r=calc(v("rp"),v("ry"),v("re"),v("rd")),days=v("days"),s=v("sh")/100;
+$("shv").textContent=Math.round(s*100)+"% maize / "+Math.round((1-s)*100)+"% rice";
+var bl=s*m.yr+(1-s)*r.yr,blp=bl/(v("cap")*days||1),fm=fin(m.yr),fr=fin(r.yr),fb=fin(bl);
+$("kp").innerHTML=[["Blended yearly EBITDA",money(bl)],["Profit after tax / year",money(fb.pat)],["Payback",fb.pay?fb.pay.toFixed(1)+" years":"n/a"],["Blended profit / litre",pl(blp)]].map(function(a){return '<div class="kc"><div class="n">'+a[0]+'</div><div class="v">'+a[1]+'</div></div>'}).join("");
+var w=m.yr>=r.yr?"m":"r";
+function k(nm,o,key){return '<div class="k'+(w==key?' win':'')+'"><div class="n">'+nm+(w==key?' (better)':'')+'</div><div class="v '+cl(o.pr)+'">'+pl(o.pr)+' / litre</div><div class="s">'+money(o.day)+' per day &middot; '+money(o.yr)+' per year</div></div>'}
+$("hero").innerHTML=k("Maize profit",m,"m")+k("Rice profit",r,"r")+'<div class="k"><div class="n">Blended ('+Math.round(s*100)+'% maize)</div><div class="v '+cl(blp)+'">'+pl(blp)+' / litre</div><div class="s">'+money(bl/(days||1))+' per day &middot; '+money(bl)+' per year</div></div>';
+var mx=Math.max(m.yr,r.yr,bl,1);
+function b(nm,x,c){return '<div class="bar"><b>'+nm+'</b><i style="width:'+Math.max(2,Math.max(x,0)/mx*60)+'%;background:'+c+'"></i><span>'+money(x)+'</span></div>'}
+$("bars").innerHTML=b("Maize",m.yr,"linear-gradient(90deg,#047857,#34d399)")+b("Rice",r.yr,"linear-gradient(90deg,#1d4ed8,#60a5fa)")+b("Blended",bl,"linear-gradient(90deg,#047857,#1e3a8a)");
+function row(a,x,y,c){return '<tr'+(c?' class="'+c+'"':'')+'><td>'+a+'</td><td>'+x+'</td><td>'+y+'</td></tr>'}
+var h='<tr><th></th><th>Maize</th><th>Rice</th></tr>';
+h+=row("Raw material",'','',"sec")+row("Daily consumption (MT)",n(m.mt),n(r.mt))+row("Monthly consumption (MT)",n(m.mt*30),n(r.mt*30))+row("Yearly consumption (MT)",n(m.mt*days),n(r.mt*days))+row("Daily cost",money(m.raw),money(r.raw))+row("Monthly cost",money(m.raw*30),money(r.raw*30))+row("Yearly cost",money(m.raw*days),money(r.raw*days));
+h+=row("Income per litre",'','',"sec")+row("Ethanol price",pl(m.e),pl(r.e))+row("DDGS",pl(m.dd),pl(r.dd))+row("CO₂",pl(m.co),pl(r.co))+row("Total income",pl(m.inc),pl(r.inc),"t");
+h+=row("Cost per litre",'','',"sec")+row("Raw material",pl(m.rawL),pl(r.rawL))+row("Chemicals, yeast, enzymes",pl(v("chem")),pl(v("chem")))+row("Fuel / boiler",pl(fl()),pl(fl()))+row("Salary, maintenance, power",pl(v("oth")),pl(v("oth")))+row("Total cost",pl(m.cost),pl(r.cost),"t");
+h+=row("Net profit",'','',"sec")+row("Profit per litre",pl(m.pr),pl(r.pr),"t")+row("Daily profit",money(m.day),money(r.day))+row("Monthly profit (30 days)",money(m.mon),money(r.mon))+row("Yearly profit ("+days+" days)",money(m.yr),money(r.yr),"t");
+$("tb").innerHTML=h;
+function r4(a,f){return '<tr><td>'+a+'</td><td>'+f(fm)+'</td><td>'+f(fr)+'</td><td>'+f(fb)+'</td></tr>'}
+$("fin").innerHTML='<tr><th></th><th>Maize</th><th>Rice</th><th>Blended</th></tr>'+r4("Yearly EBITDA",function(f){return money(f.eb)})+r4("Interest",function(f){return money(-f.i)})+r4("Depreciation",function(f){return money(-f.dp)})+r4("Profit before tax",function(f){return money(f.pbt)})+r4("Tax",function(f){return money(-f.t)})+r4("<b>Profit after tax</b>",function(f){return '<b class="'+cl(f.pat)+'">'+money(f.pat)+'</b>'})+r4("Payback (years)",function(f){return f.pay?f.pay.toFixed(1):"n/a"});
+var be=m.pr-(r.inc-r.e)+r.cost,u=v("cap")*days;
+$("ins").innerHTML='<h2>Quick insight</h2><div>'+(w=="m"?"Maize":"Rice")+' har varse <b>'+money(Math.abs(m.yr-r.yr))+'</b> vadhare profit aape chhe.</div>'+
+'<div style="margin-top:6px">Rice no ethanol price <b>'+pl(be)+'/litre</b> hoy to rice profit maize jetlu thase (atyare '+pl(v("re"))+').</div>'+
+'<div style="margin-top:6px">Ethanol price ma <b>₹1/litre</b> farak = <b>'+money(u)+'</b> per year.</div>'+
+'<div style="margin-top:6px">Grain price ma <b>₹1,000/MT</b> farak: maize <b>'+money(m.mt*1000*days)+'</b>, rice <b>'+money(r.mt*1000*days)+'</b> per year.</div>';
+extra(bl);
+}
+function load(){for(var k in D)$(k).value=D[k];render()}
+document.addEventListener("input",render);
+$("reset").onclick=load;
+load();
+</script></body></html>
