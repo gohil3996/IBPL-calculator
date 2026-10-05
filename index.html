@@ -40,15 +40,17 @@ select{width:100%;box-sizing:border-box;margin-top:3px;padding:8px;border:1px so
 summary{cursor:pointer;font-weight:700;font-size:16px;color:var(--b1)}
 .cs{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:10px 0}.cs div{background:var(--sec);border-radius:10px;padding:8px;font-size:12px;color:var(--mu)}.cs b{display:block;font-size:17px;color:var(--b2)}
 #cf{min-width:900px}
+details.card>summary{list-style:none}details.card>summary::-webkit-details-marker{display:none}
+details.card>summary::after{content:"+";float:right;font-size:20px;line-height:1;color:var(--b1)}details.card[open]>summary::after{content:"\2212"}
 @media print{.noprint{display:none!important}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.card{box-shadow:none;break-inside:avoid}}
 </style></head><body>
 <div class="hd"><div class="w"><h1>Ethanol Plant Calculator</h1><div class="sub">Maize vs Rice &middot; koi pan price badlo, badhu aapo-aap update thase</div></div></div>
 <div class="w">
 <div class="kp" id="kp"></div>
-<div class="bx noprint"><button class="b2" onclick="preset(-.1,.05,.1)">Best case</button><button class="b2" id="reset">Base case (my notes)</button><button class="b2" onclick="preset(.1,-.05,-.1)">Worst case</button><button onclick="window.print()">Print summary</button></div>
+<div class="bx noprint"><button class="b2" onclick="preset(-.1,.05,.1)">Best case</button><button class="b2" id="reset">Base case (my notes)</button><button class="b2" onclick="preset(.1,-.05,-.1)">Worst case</button><button class="b2" onclick="tog(true)">Open all</button><button class="b2" onclick="tog(false)">Close all</button><button onclick="window.print()">Print summary</button></div>
 
 
-<div class="card noprint"><h2>Plant settings</h2><div class="g">
+<details class="card noprint"><summary>Plant settings</summary><div style="height:10px"></div><div class="g">
 <label>Capacity (litres/day)<input id="cap" type="number"></label>
 <label>Operating days / year<input id="days" type="number"></label>
 <label>DDGS price (₹/MT)<input id="dp" type="number"></label>
@@ -57,7 +59,7 @@ summary{cursor:pointer;font-weight:700;font-size:16px;color:var(--b1)}
 <label>Chemicals, yeast, enzymes (₹/litre)<input id="chem" type="number" step="0.1"></label>
 <label>Fuel / boiler (₹/litre)<input id="fuel" type="number" step="0.1"></label>
 <label>Salary, maintenance, power (₹/litre)<input id="oth" type="number" step="0.1"></label>
-</div></div>
+</div></details>
 
 <div class="g noprint" style="margin-top:14px">
 <div class="card" style="margin:0"><div class="top mzt"></div><h3 style="color:var(--mz)">Maize</h3><div class="g">
@@ -72,33 +74,33 @@ summary{cursor:pointer;font-weight:700;font-size:16px;color:var(--b1)}
 <label>DDGS (kg per litre)<input id="rd" type="number" step="0.01"></label></div></div>
 </div>
 
-<div class="card noprint"><div class="top mxt"></div><h2>Dual feed mix and finance</h2><div class="g">
+<details class="card noprint"><summary>Dual feed mix and finance</summary><div style="height:10px"></div><div class="g">
 <label>Maize share: <b id="shv"></b><input id="sh" type="range" min="0" max="100" step="5"></label>
 <label>Project cost (₹ Cr)<input id="pc" type="number"></label>
 <label>Bank loan (%)<input id="db" type="number"></label>
 <label>Interest rate (%)<input id="ir" type="number" step="0.1"></label>
 <label>Depreciation (% of cost / year)<input id="dep" type="number" step="0.5"></label>
 <label>Tax rate (%)<input id="tx" type="number" step="0.5"></label>
-</div></div>
+</div></details>
 
-<div class="card noprint"><div class="top mxt"></div><h2>Fuel source: coal vs biomass</h2><div class="g">
+<details class="card noprint"><summary>Fuel source: coal vs biomass</summary><div style="height:10px"></div><div class="g">
 <label>Fuel cost used in calculation<select id="fmode"><option value="manual">Manual (₹/litre above)</option><option value="bio">Biomass</option><option value="coal">Coal</option></select></label>
 <label>Biomass price (₹/MT)<input id="bio" type="number"></label>
 <label>Biomass per litre (kg)<input id="bk" type="number" step="0.1"></label>
 <label>Coal price (₹/MT)<input id="coal" type="number"></label>
 <label>Coal per litre (kg)<input id="ck2" type="number" step="0.1"></label></div>
-<div class="sc" style="margin-top:10px"><table id="fc"></table></div></div>
+<div class="sc" style="margin-top:10px"><table id="fc"></table></div></details>
 
 <div class="hero" id="hero"></div>
 <div class="card"><h2>Yearly profit (EBITDA)</h2><div id="bars"></div></div>
-<div class="card sc"><h2>Maize vs Rice: full calculation</h2><table id="tb"></table></div>
-<div class="card sc"><h2>Profit after interest, depreciation and tax</h2><table id="fin"></table></div>
+<details class="card" id="d1"><summary>Maize vs Rice: full calculation</summary><div style="height:10px"></div><div class="sc"><table id="tb"></table></div></details>
+<details class="card" id="d2"><summary>Profit after interest, depreciation and tax</summary><div style="height:10px"></div><div class="sc"><table id="fin"></table></div></details>
 <details class="card" id="cfd"><summary>Year-wise cash flow, DSCR and IRR (click to open)</summary>
 <div class="g noprint" style="margin:12px 0"><label>Loan tenure (years)<input id="ln" type="number"></label><label>Moratorium (years)<input id="mo" type="number"></label></div>
 <div class="cs" id="cfs"></div><div class="sc"><table id="cf"></table></div>
 <div class="note" style="margin-bottom:0">Blended EBITDA har varse sarkho (growth ke ramp-up nathi). Moratorium ma matra interest, pachhi equal principal instalments. Tax ma loss carry-forward nathi. IRR ma terminal value, working capital ane ramp-up nathi, etle notes ni IRR (24-28%) karta vadhare aave. Amounts ₹ Cr ma.</div></details>
 
-<div class="card" id="ins"></div>
+<details class="card" id="d3"><summary>Quick insight</summary><div style="height:10px"></div><div id="ins"></div></details>
 <div class="note">Raw material daily MT = capacity ÷ yield (neeche rounded, jem notes ma). Monthly = 30 divas. Interest, depreciation ane tax defaults mara assumptions chhe (tamari notes ma nathi), potana pramane badlo. Interest pehla varse puri loan par ganyu chhe.</div>
 </div>
 <script>
@@ -129,7 +131,8 @@ function rw(nm,f,cls){return '<tr'+(cls?' class="'+cls+'"':'')+'><td>'+nm+'</td>
 $("cf").innerHTML='<tr><th>Year</th>'+R.map(function(x){return '<th>'+x.t+'</th>'}).join("")+'</tr>'+rw("Opening loan",function(x){return '<td>'+c(x.op)+'</td>'})+rw("Interest",function(x){return '<td>'+c(x.it)+'</td>'})+rw("Principal repaid",function(x){return '<td>'+c(x.pr)+'</td>'})+rw("EBITDA",function(x){return '<td>'+c(x.eb)+'</td>'})+rw("Depreciation",function(x){return '<td>'+c(x.dp)+'</td>'})+rw("Tax",function(x){return '<td>'+c(x.tx)+'</td>'})+rw("Profit after tax",function(x){return '<td class="'+cl(x.pat)+'">'+c(x.pat)+'</td>'},"t")+rw("Debt service",function(x){return '<td>'+c(x.ds)+'</td>'})+rw("DSCR",function(x){return '<td class="'+(x.dscr===null?'':x.dscr<1.2?'neg':'pos')+'">'+(x.dscr===null?'-':x.dscr.toFixed(2))+'</td>'},"t")+rw("Cash to equity",function(x){return '<td class="'+cl(x.fc)+'">'+c(x.fc)+'</td>'})+rw("Cumulative equity cash",function(x){return '<td class="'+cl(x.cum)+'">'+c(x.cum)+'</td>'});
 }
 function fl(){var m=$("fmode").value;if(m=="bio")return v("bk")*v("bio")/1000;if(m=="coal")return v("ck2")*v("coal")/1000;return v("fuel")}
-window.onbeforeprint=function(){$("cfd").open=true};
+window.onbeforeprint=function(){["cfd","d1","d2","d3"].forEach(function(i){$(i).open=true})};
+function tog(o){var a=document.querySelectorAll("details");for(var i=0;i<a.length;i++)a[i].open=o}
 
 function calc(p,y,e,d){var cap=v("cap"),days=v("days"),mt=y?Math.floor(cap/y):0,raw=mt*p,rawL=cap?raw/cap:0,dd=d/1000*v("dp"),co=v("ck")*v("cp"),inc=e+dd+co,cost=rawL+v("chem")+fl()+v("oth"),pr=inc-cost,day=pr*cap;
 return{mt:mt,raw:raw,rawL:rawL,e:e,dd:dd,co:co,inc:inc,cost:cost,pr:pr,day:day,mon:day*30,yr:day*days}}
@@ -156,7 +159,7 @@ $("tb").innerHTML=h;
 function r4(a,f){return '<tr><td>'+a+'</td><td>'+f(fm)+'</td><td>'+f(fr)+'</td><td>'+f(fb)+'</td></tr>'}
 $("fin").innerHTML='<tr><th></th><th>Maize</th><th>Rice</th><th>Blended</th></tr>'+r4("Yearly EBITDA",function(f){return money(f.eb)})+r4("Interest",function(f){return money(-f.i)})+r4("Depreciation",function(f){return money(-f.dp)})+r4("Profit before tax",function(f){return money(f.pbt)})+r4("Tax",function(f){return money(-f.t)})+r4("<b>Profit after tax</b>",function(f){return '<b class="'+cl(f.pat)+'">'+money(f.pat)+'</b>'})+r4("Payback (years)",function(f){return f.pay?f.pay.toFixed(1):"n/a"});
 var be=m.pr-(r.inc-r.e)+r.cost,u=v("cap")*days;
-$("ins").innerHTML='<h2>Quick insight</h2><div>'+(w=="m"?"Maize":"Rice")+' har varse <b>'+money(Math.abs(m.yr-r.yr))+'</b> vadhare profit aape chhe.</div>'+
+$("ins").innerHTML='<div>'+(w=="m"?"Maize":"Rice")+' har varse <b>'+money(Math.abs(m.yr-r.yr))+'</b> vadhare profit aape chhe.</div>'+
 '<div style="margin-top:6px">Rice no ethanol price <b>'+pl(be)+'/litre</b> hoy to rice profit maize jetlu thase (atyare '+pl(v("re"))+').</div>'+
 '<div style="margin-top:6px">Ethanol price ma <b>₹1/litre</b> farak = <b>'+money(u)+'</b> per year.</div>'+
 '<div style="margin-top:6px">Grain price ma <b>₹1,000/MT</b> farak: maize <b>'+money(m.mt*1000*days)+'</b>, rice <b>'+money(r.mt*1000*days)+'</b> per year.</div>';
